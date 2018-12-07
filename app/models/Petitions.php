@@ -23,8 +23,6 @@ class Petitions
 			';
         $sth = $dbh->prepare($sql);
         $sth->execute();
-        $petitions = $sth->fetchAll(PDO::FETCH_OBJ);
-
-        de('кол-во петиций: ' . count($petitions));
+        return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 }

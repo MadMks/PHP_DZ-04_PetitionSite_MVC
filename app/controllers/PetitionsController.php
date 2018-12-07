@@ -1,18 +1,17 @@
 <?php
 
-require 'app/models/Petitions.php';
+require ROOT . '/app/models/Petitions.php';
 
     class PetitionsController
     {
         public function IndexAction()
         {
-            echo "<br>";
-            echo "<br>";
-            echo 'PetitionsController - IndexAction';
+            $petitions = Petitions::getPetitionsList();
 
-            echo "<br>";
-            echo "<br>";
-            Petitions::getPetitionsList();
+            de('Список петиций:'); de('');
+            print_r($petitions); de('');
+            de('Кол-во петиций: ' . count($petitions));
+
             return true;
         }
 
