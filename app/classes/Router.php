@@ -22,9 +22,9 @@
 //echo "pattern = $pattern <br>";
 
                 if (preg_match("~$pattern~", $uri)){
-                    $result = preg_replace("~$pattern~", $route, $uri, 1);
+                    $intRoutes = preg_replace("~$pattern~", $route, $uri, 1);
 //                    print_r($intRoutes);
-                    $segments = explode('|', $result);
+                    $segments = explode('|', $intRoutes);
 
                     $controllerName = ucfirst(array_shift($segments)) . 'Controller';
 
@@ -35,7 +35,7 @@
                 }
             }
 
-            if ($result == false){
+            if ($intRoutes == false){
                 echo 'URI not found';
                 exit;
             }
@@ -54,13 +54,37 @@
             }
             echo "<br>";        // TODO: temp line.
             print_r($params);   // TODO: temp line.
+
             // Подключение файла класса контроллера.
+            $controllerFile
+//                = $_SERVER['DOCUMENT_ROOT']
+                = 'app/controllers/' . $controllerName . '.php';
+
+            if (file_exists($controllerFile))
+            {
+                require $controllerFile;
+
+                // Создаем объект, вызываем action.
+                $controllerObject = new $controllerName();
+                if (method_exists($controllerObject, $actionName)){
+                    $controllerObject->$actionName();   // TODO: params???
+                } else throw new Exception("Action not found");
+
+            } else throw new Exception("File not found");
+
+
         }
 
         private function getURI()
         {
             if (!empty($_SERVER['REQUEST_URI'])){
                 return trim($_SERVER['REQUEST_URI'], '/');
+            }
+            if (!empty($_SERVER['PATH_INFO'])){
+                return trim($_SERVER['PATH_INFO'], '/');
+            }
+            if (!empty($_SERVER['QUERY_STRING'])){
+                return trim($_SERVER['QUERY_STRING'], '/');
             }
         }
     }
