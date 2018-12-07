@@ -21,8 +21,8 @@
             foreach ($this->routes as $pattern => $route){
 //echo "pattern = $pattern <br>";
 
-                if (preg_match("~$pattern~", $uri)){
-                    $intRoutes = preg_replace("~$pattern~", $route, $uri, 1);
+                if (preg_match("~^$pattern$~", $uri)){
+                    $intRoutes = preg_replace("~^$pattern$~", $route, $uri, 1);
 //                    print_r($intRoutes);
                     $segments = explode('|', $intRoutes);
 
