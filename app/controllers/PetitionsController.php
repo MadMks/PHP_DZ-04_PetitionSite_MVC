@@ -1,5 +1,7 @@
 <?php
 
+require 'app/models/Petitions.php';
+
     class PetitionsController
     {
         public function IndexAction()
@@ -10,7 +12,7 @@
 
             echo "<br>";
             echo "<br>";
-            echo 'Список петиций';
+            Petitions::getPetitionsList();
             return true;
         }
 
@@ -22,8 +24,7 @@
 
             echo "<br>";
             echo "<br>";
-            echo 'Одна петиция' . "<br>";
-            print_r($params);
+            Petitions::getPetitionById($params['id']);
             return true;
         }
     }
