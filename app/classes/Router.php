@@ -67,7 +67,7 @@
                 // Создаем объект, вызываем action.
                 $controllerObject = new $controllerName();
                 if (method_exists($controllerObject, $actionName)){
-                    $controllerObject->$actionName();   // TODO: params???
+                    $controllerObject->$actionName($params);   // TODO: params???
                 } else throw new Exception("Action not found");
 
             } else throw new Exception("File not found");
