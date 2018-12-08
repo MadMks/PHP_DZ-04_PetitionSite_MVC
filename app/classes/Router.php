@@ -29,9 +29,6 @@
                     $controllerName = ucfirst(array_shift($segments)) . 'Controller';
 
                     $actionName = ucfirst(array_shift($segments)) . 'Action';
-
-//                    echo '<br>Контроллер: ' . $controllerName;  // TODO: temp line.
-//                    echo '<br>Экшен: ' . $actionName;           // TODO: temp line.
                 }
             }
 
@@ -52,8 +49,7 @@
                     $params[] = $kv[0];
                 }
             }
-//            echo "<br>";        // TODO: temp line.
-//            print_r($params);   // TODO: temp line.
+
 
             // Подключение файла класса контроллера.
             $controllerFile
@@ -67,7 +63,7 @@
                 // Создаем объект, вызываем action.
                 $controllerObject = new $controllerName();
                 if (method_exists($controllerObject, $actionName)){
-                    $controllerObject->$actionName($params);   // TODO: params???
+                    $controllerObject->$actionName($params);
                 } else throw new Exception("Action not found");
 
             } else throw new Exception("File not found");

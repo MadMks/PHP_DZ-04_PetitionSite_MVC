@@ -1,6 +1,4 @@
 <?php
-    // TODO: FIX: dev file
-include 'app/components/dev.php';
 
     session_start();
 
