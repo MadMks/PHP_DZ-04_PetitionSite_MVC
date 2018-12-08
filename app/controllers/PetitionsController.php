@@ -48,6 +48,7 @@ require ROOT . '/app/models/Petitions.php';
                 }
             }
 
+
             $layout->display();
 
             return true;
