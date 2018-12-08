@@ -2,9 +2,8 @@
 
     function sendMail($email, $petitionId, $token){
         $message = 'Перейдите по '
-            .'<a href="http://localhost:81/index.php'
-            .'?page=4'
-            ."&id=$petitionId&token=$token"
+            .'<a href="http://localhost:81/petitions/'
+            ."$petitionId&$token"
             .'">'
             .'ссылке</a>,'
             .' для активации петиции.';

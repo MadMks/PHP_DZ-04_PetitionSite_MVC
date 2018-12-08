@@ -120,8 +120,6 @@ class Petitions
             }
 
         }
-
-
     }
 
 
@@ -146,6 +144,39 @@ class Petitions
         }
     }
 
+
+    public static function activationPetition($params)
+    {
+        $dbh = DB::getConnection();
+
+        if (isset($params['id']) && isset($params['token'])) {
+
+            $petitionId = $params['id'];
+            $token = $params['token'];
+            $sth = $dbh->prepare(
+                "SELECT * FROM state_of_petitions
+            WHERE petition_id = :petitionId"
+            );
+            $sth->bindValue(':petitionId', $petitionId);
+            $sth->execute();
+            $petitionState = $sth->fetch(PDO::FETCH_ASSOC);
+
+            if (!empty($petitionState)) {
+                if ($petitionState['activationKey'] == $token) {
+                    if (Petitions::activationOfThePetition($petitionId)){
+                        return true;
+                    }
+                    else{
+//                        header('Location: index.php?page=1');
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+    }
 
 
 
@@ -273,6 +304,20 @@ class Petitions
         );
         $sth->bindValue(':userId', $userId);
         $sth->bindValue(':pId', $petitionId);
+        return $sth->execute();
+    }
+
+    private static function activationOfThePetition($petitionId){
+
+        $dbh = DB::getConnection();
+
+        // Активация петиции.
+        $sth = $dbh->prepare(
+            'UPDATE state_of_petitions
+                    SET active = 1
+                    WHERE petition_id = :petitionId'
+        );
+        $sth->bindValue(':petitionId', $petitionId);
         return $sth->execute();
     }
 

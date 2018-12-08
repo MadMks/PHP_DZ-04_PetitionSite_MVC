@@ -83,4 +83,27 @@ require ROOT . '/app/models/Petitions.php';
 
             return true;
         }
+
+        public function ActivationAction($params){
+
+            $title = "Активация петиции";
+
+            $home = new View('activation');
+
+            // Активация.
+            $message = new View('message');
+            if (Petitions::activationPetition($params)){
+                $message->assign('status', 'activateSuccess');
+            }
+            else{
+                $message->assign('status', 'activateWarning');
+            }
+            $home->import('messageStatus', $message);
+
+            $layout = new View('layout');
+            $layout->assign('title', $title);
+            $layout->import('content', $home);
+
+            $layout->display();
+        }
     }

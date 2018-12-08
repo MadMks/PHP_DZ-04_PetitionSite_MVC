@@ -1,7 +1,3 @@
-<!--<div class="alert --><?php //echo $status; ?><!--">-->
-<!--    --><?php //echo $text; ?>
-<!--</div>-->
-
 <?php
 if ($status == 'signSuccess') {
     ?>
@@ -21,6 +17,20 @@ if ($status == 'addSuccess'){
     ?>
     <div class="alert alert-success">
         На почту отправлено письмо для подтверждения...
+    </div>
+    <?php
+}
+if ($status == 'activateSuccess'){
+    ?>
+    <div class="alert alert-success mt-3">
+        Петиция подтверждена.
+    </div>
+    <?php
+}
+if ($status == 'activateWarning') {
+    ?>
+    <div class="alert alert-warning mt-3">
+        Петиция не подтверждена.
     </div>
     <?php
 }
