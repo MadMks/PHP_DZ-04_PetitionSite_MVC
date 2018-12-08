@@ -21,22 +21,28 @@ require ROOT . '/app/models/Petitions.php';
 
         public function ShowAction($params)
         {
-//            echo "<br>";
-//            echo "<br>";
-//            echo 'PetitionsController - ShowAction';
-//
-//            echo "<br>";
-//            echo "<br>";
-            Petitions::getPetitionById($params['id']);
+            $petition = Petitions::getPetitionById($params['id']);
+            $title = $petition->title;
 
             $home = new View('show');
+            $home->assign('petition', $petition);
+
+            $layout = new View('layout');
+            $layout->assign('title', $title);
+            $layout->import('content', $home);
+            $layout->display();
             return true;
         }
 
         public function AddAction(){
 
-//            $home
+            $title = "Добавление петиции";
+
+            $home = new View('add');
+
             $layout = new View('layout');
+            $layout->assign('title', $title);
+            $layout->import('content', $home);
             $layout->display();
         }
     }

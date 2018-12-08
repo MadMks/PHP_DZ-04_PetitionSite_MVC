@@ -12,7 +12,7 @@
                         <div class="card-subtitle">Подписей: <?php echo($petition->countOfVotes); ?></div>
                     </div>
                     <div class="col-4">
-                        <a href="index.php?page=3&id=<?php echo($petition->id); ?>"
+                        <a href="/petitions/show/<?php echo($petition->id); ?>"
                            class="btn btn-info float-right">
                             Описание</a>
                     </div>
