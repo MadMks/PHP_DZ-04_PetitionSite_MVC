@@ -22,3 +22,13 @@
     <?php } ?>
 
 </div>
+
+<div class="col-4">
+    <div class="card">
+        <div class="card-body">
+            <div class="card-text">
+                Количество петиций: <?php echo count($petitions); ?>
+            </div>
+        </div>
+    </div>
+</div>
