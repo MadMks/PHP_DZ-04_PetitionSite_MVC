@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<?php $content ?>
+<?php $content; ?>
     
 </body>
 </html>

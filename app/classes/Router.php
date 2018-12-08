@@ -30,8 +30,8 @@
 
                     $actionName = ucfirst(array_shift($segments)) . 'Action';
 
-                    echo '<br>Контроллер: ' . $controllerName;  // TODO: temp line.
-                    echo '<br>Экшен: ' . $actionName;           // TODO: temp line.
+//                    echo '<br>Контроллер: ' . $controllerName;  // TODO: temp line.
+//                    echo '<br>Экшен: ' . $actionName;           // TODO: temp line.
                 }
             }
 
@@ -52,8 +52,8 @@
                     $params[] = $kv[0];
                 }
             }
-            echo "<br>";        // TODO: temp line.
-            print_r($params);   // TODO: temp line.
+//            echo "<br>";        // TODO: temp line.
+//            print_r($params);   // TODO: temp line.
 
             // Подключение файла класса контроллера.
             $controllerFile

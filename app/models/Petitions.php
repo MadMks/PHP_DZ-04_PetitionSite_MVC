@@ -9,7 +9,7 @@ class Petitions
 
     public static function getPetitionsList()
     {
-        de('данные всех статей из DB');
+//        de('данные всех статей из DB');
 
         $dbh = DB::getConnection();
 
