@@ -1,5 +1,5 @@
 <div class="col-6">
-    <form method="post">
+    <form action="/petitions/add" method="POST">
 
         <div class="form-group">
             <input type="text" class="form-control" name="title" placeholder="Название">

@@ -44,5 +44,11 @@ require ROOT . '/app/models/Petitions.php';
             $layout->assign('title', $title);
             $layout->import('content', $home);
             $layout->display();
+
+            if (!empty($_POST)){
+                echo $_POST['title'];
+                Petitions::addPetition();
+                echo $_POST['title'];
+            }
         }
     }
