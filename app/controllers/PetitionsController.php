@@ -6,16 +6,14 @@ require ROOT . '/app/models/Petitions.php';
     {
         public function IndexAction()
         {
+            $title = "Петиции";
             $petitions = Petitions::getPetitionsList();
 
-//            de('Список петиций:'); de('');
-//            print_r($petitions); de('');
-//            de('Кол-во петиций: ' . count($petitions));
-
             $home = new View('index');
-            // TODO: assign - передача данных
+            $home->assign('petitions', $petitions);
 
             $layout = new View('layout');
+            $layout->assign('title', $title);
             $layout->import('content', $home);
             $layout->display();
             return true;
@@ -33,5 +31,12 @@ require ROOT . '/app/models/Petitions.php';
 
             $home = new View('show');
             return true;
+        }
+
+        public function AddAction(){
+
+//            $home
+            $layout = new View('layout');
+            $layout->display();
         }
     }

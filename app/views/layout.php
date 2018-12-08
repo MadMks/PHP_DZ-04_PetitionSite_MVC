@@ -16,6 +16,8 @@
             <div class="row">
                 <nav class="col-12">
 
+                    <?php include('menu.php') ?>
+
                 </nav>
             </div>
         </div>
