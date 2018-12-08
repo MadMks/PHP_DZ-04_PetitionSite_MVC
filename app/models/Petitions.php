@@ -8,7 +8,7 @@ class Petitions
 
     public static function getPetitionById($id)
     {
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         $sth = $dbh->prepare(
             'SELECT p.*, users.email AS author 
@@ -24,7 +24,7 @@ class Petitions
 
     public static function getPetitionsList()
     {
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         $sql = 'SELECT petitions.*, users.email AS author_email
 			FROM petitions
@@ -43,7 +43,7 @@ class Petitions
     // Добавление петиции.
     public static function addPetition()
     {
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         if (!empty($_POST)){
             if (isset($_POST['btnSubmit'])
@@ -147,7 +147,7 @@ class Petitions
 
     public static function activationPetition($params)
     {
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         if (isset($params['id']) && isset($params['token'])) {
 
@@ -187,7 +187,7 @@ class Petitions
 
     private static function IsAlreadySigned($petitionId, $subsEmail){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         // Узнаем есть ли голос этого емайл за данную петицию.
         $sth = $dbh->prepare(
@@ -214,7 +214,7 @@ class Petitions
 
     private static function SignThePetition($petitionId, $subsEmail){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         // Петиция за которую голосуем.
         $sth = $dbh->prepare(
@@ -254,7 +254,7 @@ class Petitions
 
     private static function IsEmailExists($email){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         // Есть ли зарегестрированный автор (по емайл).
         $sth = $dbh->prepare(
@@ -269,7 +269,7 @@ class Petitions
 
     private static function AddNewEmail($newEmail){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         // Записываем новый емайл в таблицу.
         $sth = $dbh->prepare(
@@ -282,7 +282,7 @@ class Petitions
 
     private static function GetEmailId($subsEmail){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         $sth = $dbh->prepare(
             'SELECT id FROM users
@@ -296,7 +296,7 @@ class Petitions
 
     private static function ReserveEmailForPetition($petitionId, $userId){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         $sth = $dbh->prepare(
             'INSERT INTO list_of_votes (user_id, petition_id) 
@@ -309,7 +309,7 @@ class Petitions
 
     private static function activationOfThePetition($petitionId){
 
-        $dbh = DB::getConnection();
+        $dbh = Db::getConnection();
 
         // Активация петиции.
         $sth = $dbh->prepare(
