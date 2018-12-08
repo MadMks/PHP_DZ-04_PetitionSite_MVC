@@ -13,6 +13,11 @@ require ROOT . '/app/models/Petitions.php';
 //            de('Кол-во петиций: ' . count($petitions));
 
             $home = new View('index');
+            // TODO: assign - передача данных
+
+            $layout = new View('layout');
+            $layout->import('content', $home);
+            $layout->display();
             return true;
         }
 
