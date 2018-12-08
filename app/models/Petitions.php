@@ -50,7 +50,7 @@ class Petitions
                 && !empty($_POST['email'])
                 && !empty($_POST['description'])
             ) {
-de('зашли в добавление');
+
                 // Есть ли зарегестрированный автор (по емайл).
                 $sth = $dbh->prepare(
                     "SELECT * FROM users
@@ -110,12 +110,21 @@ de('зашли в добавление');
                 if ($result) {
                     sendMail($userEmail['email'], $petition['id'], $token);
                 }
-//                $_SESSION['message'] = 'success';
+                $_SESSION['message'] = 'success';
+
+//                echo "<script>";
+//                echo "window.location=document.URL;";
+//                echo "</script>";
+
+                return true;
             }
             // header('Location: /add.php');
-//            echo "<script>";
-//            echo "window.location=document.URL;";
-//            echo "</script>";
+
         }
+//        echo "<script>";
+//        echo "window.location=document.URL;";
+//        echo "</script>";
+
+        return false;
     }
 }

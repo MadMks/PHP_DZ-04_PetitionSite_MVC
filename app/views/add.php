@@ -18,3 +18,9 @@
 
     </form>
 </div>
+
+<div class="col-6">
+
+    <?php echo $addInfo; ?>
+
+</div>
