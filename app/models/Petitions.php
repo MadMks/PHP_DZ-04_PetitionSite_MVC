@@ -39,6 +39,8 @@ class Petitions
         return $sth->fetchAll(PDO::FETCH_OBJ);
     }
 
+
+    // Добавление петиции.
     public static function addPetition()
     {
         $dbh = DB::getConnection();
@@ -110,7 +112,7 @@ class Petitions
                 if ($result) {
                     sendMail($userEmail['email'], $petition['id'], $token);
                 }
-                $_SESSION['message'] = 'success';
+                $_SESSION['message'] = 'addSuccess';
 
                 echo "<script>";
                 echo "window.location=document.URL;";
@@ -121,4 +123,157 @@ class Petitions
 
 
     }
+
+
+    // Подписать петицию.
+    public static function signPetition(){
+        if (!empty($_POST['subsPetitionId'])
+            && !empty($_POST['subsEmail'])) {
+
+            if (!Petitions::IsAlreadySigned(
+                    $_POST['subsPetitionId'],
+                    $_POST['subsEmail']))
+            {
+                Petitions::SignThePetition(
+                    $_POST['subsPetitionId'],
+                    $_POST['subsEmail']);
+                Petitions::SessionUpdate('signSuccess');
+            }
+            else{
+                Petitions::SessionUpdate('signExists');
+            }
+
+        }
+    }
+
+
+
+
+    //
+    // Приватные методы.
+    //
+
+
+    private static function IsAlreadySigned($petitionId, $subsEmail){
+
+        $dbh = DB::getConnection();
+
+        // Узнаем есть ли голос этого емайл за данную петицию.
+        $sth = $dbh->prepare(
+            'SELECT list.*, u.email AS userEmail
+                FROM list_of_votes AS list
+                LEFT JOIN users AS u
+                  ON list.user_id = u.id
+                WHERE u.email = :subsEmail
+                AND list.petition_id = :pId'
+        );
+        $sth->bindValue(':pId', $petitionId);
+        $sth->bindValue(':subsEmail', $subsEmail);
+        $sth->execute();
+        $votes = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($votes['petition_id'] == $petitionId
+            && $votes['userEmail'] == $subsEmail){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    private static function SignThePetition($petitionId, $subsEmail){
+
+        $dbh = DB::getConnection();
+
+        // Петиция за которую голосуем.
+        $sth = $dbh->prepare(
+            "SELECT * FROM petitions AS p
+            WHERE p.id = :pId"
+        );
+        $sth->bindValue(':pId', $petitionId);
+        $sth->execute();
+        $petition = $sth->fetch(PDO::FETCH_ASSOC);
+        $newCount = $petition['countOfVotes'] + 1;
+        // Увеличиваем кол-во голосов на 1.
+        $sth = $dbh->prepare(
+            'UPDATE petitions AS p
+             SET p.countOfVotes = :newCount
+             WHERE p.id = :pId'
+        );
+        $sth->bindValue(':pId', $petitionId);
+        $sth->bindValue(':newCount', $newCount);
+        $sth->execute();
+        if (!Petitions::IsEmailExists($_POST['subsEmail'])){
+            Petitions::AddNewEmail($_POST['subsEmail']);
+        }
+        // Получим id пользователя по email.
+        $userId = Petitions::GetEmailId($subsEmail);
+        // Закрепляем емайл за петицией.
+        Petitions::ReserveEmailForPetition($petitionId, $userId);
+    }
+
+
+    private static function SessionUpdate($messageStatus){
+        $_SESSION['message'] = $messageStatus;
+        echo "<script>";
+        echo "window.location=document.URL;";
+        echo "</script>";
+    }
+
+
+    private static function IsEmailExists($email){
+
+        $dbh = DB::getConnection();
+
+        // Есть ли зарегестрированный автор (по емайл).
+        $sth = $dbh->prepare(
+            "SELECT * FROM users
+            WHERE email = :email"
+        );
+        $sth->bindValue(':email', $email);
+        $sth->execute();
+        return $sth->fetch(PDO::FETCH_ASSOC);
+    }
+
+
+    private static function AddNewEmail($newEmail){
+
+        $dbh = DB::getConnection();
+
+        // Записываем новый емайл в таблицу.
+        $sth = $dbh->prepare(
+            "INSERT INTO users (email)
+                VALUES (:email)"
+        );
+        $sth->bindValue(':email', $newEmail);
+        return $sth->execute();
+    }
+
+    private static function GetEmailId($subsEmail){
+
+        $dbh = DB::getConnection();
+
+        $sth = $dbh->prepare(
+            'SELECT id FROM users
+          WHERE email = :subsEmail'
+        );
+        $sth->bindValue(':subsEmail', $subsEmail);
+        $sth->execute();
+        $userId = $sth->fetch(PDO::FETCH_ASSOC);
+        return $userId['id'];
+    }
+
+    private static function ReserveEmailForPetition($petitionId, $userId){
+
+        $dbh = DB::getConnection();
+
+        $sth = $dbh->prepare(
+            'INSERT INTO list_of_votes (user_id, petition_id) 
+            VALUES (:userId, :pId)'
+        );
+        $sth->bindValue(':userId', $userId);
+        $sth->bindValue(':pId', $petitionId);
+        return $sth->execute();
+    }
+
 }

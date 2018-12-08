@@ -21,6 +21,6 @@
 
 <div class="col-6">
 
-    <?php echo $addInfo; ?>
+    <?php echo $messageStatus; ?>
 
 </div>

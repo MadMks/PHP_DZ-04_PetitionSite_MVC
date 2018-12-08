@@ -30,7 +30,26 @@ require ROOT . '/app/models/Petitions.php';
             $layout = new View('layout');
             $layout->assign('title', $title);
             $layout->import('content', $home);
+
+
+            // Подписать петицию.
+            if (isset($_POST['btnSubmit'])){
+                Petitions::signPetition();
+            }
+            else{
+                // Сообщение о выполнении.
+                if (!empty($_SESSION['message'])) {
+                    $message = new View('message');
+                    $message->assign('status', $_SESSION['message']);
+                    $home->import(
+                        'messageStatus',
+                        $message);
+                    unset($_SESSION['message']);
+                }
+            }
+
             $layout->display();
+
             return true;
         }
 
@@ -44,6 +63,7 @@ require ROOT . '/app/models/Petitions.php';
             $layout->assign('title', $title);
             $layout->import('content', $home);
 
+
             // Добавление петиции.
             if (!empty($_POST)){
                 Petitions::addPetition();
@@ -52,16 +72,15 @@ require ROOT . '/app/models/Petitions.php';
                 // Сообщение о выполнении.
                 if (!empty($_SESSION['message'])) {
                     $message = new View('message');
-                    $message->assign('status', 'alert-success');
-                    $message->assign(
-                        'text',
-                        'На почту отправлено письмо для подтверждения...');
-                    $home->import('addInfo', $message);
+                    $message->assign('status', $_SESSION['message']);
+                    $home->import('messageStatus', $message);
                     unset($_SESSION['message']);
                 }
             }
 
             // Выводим на экран.
             $layout->display();
+
+            return true;
         }
     }

@@ -19,7 +19,8 @@
 
             <h5 class="card-title">Подписать петицию</h5>
 
-            <form method="POST">
+            <form action="/petitions/show/<?php echo($petition->id); ?>"
+                  method="POST">
                 <div class="form-group">
                     <input name="subsEmail" type="email" class="form-control"
                            placeholder="Введите email">
@@ -33,7 +34,7 @@
                     Подписать</button>
             </form>
 
-
+            <?php echo $messageStatus; ?>
 
         </div>
     </div>
