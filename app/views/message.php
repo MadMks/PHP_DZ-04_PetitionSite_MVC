@@ -1,3 +1,3 @@
 <div class="alert <?php echo $status; ?>">
-    На почту отправлено письмо для подтверждения...
+    <?php echo $text; ?>
 </div>

@@ -112,19 +112,13 @@ class Petitions
                 }
                 $_SESSION['message'] = 'success';
 
-//                echo "<script>";
-//                echo "window.location=document.URL;";
-//                echo "</script>";
-
-                return true;
+                echo "<script>";
+                echo "window.location=document.URL;";
+                echo "</script>";
             }
-            // header('Location: /add.php');
 
         }
-//        echo "<script>";
-//        echo "window.location=document.URL;";
-//        echo "</script>";
 
-        return false;
+
     }
 }

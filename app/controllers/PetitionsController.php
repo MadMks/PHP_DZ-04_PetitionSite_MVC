@@ -43,23 +43,22 @@ require ROOT . '/app/models/Petitions.php';
             $layout = new View('layout');
             $layout->assign('title', $title);
             $layout->import('content', $home);
-//            $layout->display();
 
-            // Сообщение о выполнении.
+            // Добавление петиции.
             if (!empty($_POST)){
-                $message = new View('message');
-                if (Petitions::addPetition()){
+                Petitions::addPetition();
+            }
+            else{
+                // Сообщение о выполнении.
+                if (!empty($_SESSION['message'])) {
+                    $message = new View('message');
                     $message->assign('status', 'alert-success');
                     $message->assign(
                         'text',
                         'На почту отправлено письмо для подтверждения...');
-                }else{
-                    $message->assign('status', 'alert-warning');
-                    $message->assign(
-                        'text',
-                        'Ошибка. Письмо для подтверждения не отправлено.');
+                    $home->import('addInfo', $message);
+                    unset($_SESSION['message']);
                 }
-                $home->import('addInfo', $message);
             }
 
             // Выводим на экран.
