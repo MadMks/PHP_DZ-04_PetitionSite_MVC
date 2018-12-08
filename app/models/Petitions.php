@@ -1,6 +1,6 @@
 <?php
 
-require '/app/components/functions.php';
+require 'app/components/functions.php';
 
 class Petitions
 {
